@@ -4,10 +4,11 @@
 [![Pandas](https://img.shields.io/badge/Pandas-2.0+-green.svg)](https://pandas.pydata.org/)
 [![Scikit-learn](https://img.shields.io/badge/Scikit--learn-1.2+-orange.svg)](https://scikit-learn.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.25+-red.svg)](https://streamlit.io/)
+[![DeepSeek](https://img.shields.io/badge/DeepSeek-API-purple.svg)](https://deepseek.com/)
 
 ## 📋 Visão Geral
 
-Este projeto tem como objetivo **analisar e prever o churn (cancelamento) de clientes** em uma instituição bancária. Utilizando uma abordagem que combina **teste de hipóteses**, **heurísticas** e **Machine Learning**, o projeto identifica os principais fatores que levam ao cancelamento e fornece recomendações acionáveis para retenção de clientes.
+Este projeto tem como objetivo **analisar e prever o churn (cancelamento) de clientes** em uma instituição bancária. Utilizando uma abordagem que combina **teste de hipóteses**, **heurísticas**, **Machine Learning** e **Inteligência Artificial (DeepSeek)**, o projeto identifica os principais fatores que levam ao cancelamento e fornece recomendações acionáveis para retenção de clientes.
 
 ### 🎯 Objetivos
 
@@ -15,6 +16,27 @@ Este projeto tem como objetivo **analisar e prever o churn (cancelamento) de cli
 - **Criar heurísticas** (regras práticas) para identificar clientes em risco
 - **Construir um modelo preditivo** para estimar a probabilidade de churn
 - **Desenvolver um dashboard interativo** para visualização dos insights
+- **Integrar um LLM (DeepSeek)** para geração automática de insights e recomendações
+
+---
+
+## 🤖 Integração com DeepSeek (LLM)
+
+O projeto utiliza a API da **DeepSeek** para gerar automaticamente análises aprofundadas, insights não óbvios e recomendações de negócio baseadas nos dados.
+
+### O que a IA faz:
+
+| Funcionalidade                | Descrição                                                     |  
+|-------------------------------|---------------------------------------------------------------|  
+| **📋 Resumo Executivo**       | Gera um resumo em linguagem simples dos principais achados    |  
+| **💡 Insights Principais**    | Identifica padrões e tendências com números concretos         |  
+| **🎯 Recomendações**          | Sugere ações específicas para cada perfil de risco            |  
+| **🔍 Insights Não Óbvios**    | Revela padrões ocultos que não estão na superfície            |  
+| **💬 Perguntas Interativas**  | Permite fazer perguntas sobre os dados em linguagem natural   |  
+
+### Exemplo de Insight Gerado pela IA:
+
+> *"O banco está perdendo seus clientes mais valiosos. Clientes com maior saldo são os que mais saem (R$ 91 mil vs R$ 72 mil). Isso sugere que o banco não está oferecendo valor proporcional ao patrimônio do cliente."*
 
 ---
 
@@ -109,6 +131,22 @@ Acurácia	        | 81%   |
 
 * Tenure, HasCrCard, EstimatedSalary - Baixo impacto preditivo
 
+### 4. Integração com LLM (DeepSeek)
+
+O projeto utiliza a API da DeepSeek para gerar insights automaticamente:
+
+```python
+class DeepSeekClient:
+    def __init__(self, api_key: str = None, model: str = "deepseek-chat"):
+        self.api_key = api_key or os.getenv("DEEPSEEK_API_KEY")
+        self.model = model
+        self.base_url = "https://api.deepseek.com/chat/completions"
+    
+    def chat(self, messages, temperature=0.7, max_tokens=2000):
+        """Envia uma mensagem para a DeepSeek"""
+        # ... código completo no dashboard
+```
+
 ---
 
 ## 📂 Estrutura do Projeto
@@ -126,14 +164,15 @@ projeto_churn/
 │   └── 04_dashboard.ipynb              # Dashboard Plotly
 │
 ├── dashboard/
-│   ├── streamlit_app.py             # Dashboard interativo
-│   └── requirements.txt             # Dependências
+│   ├── dashboard.py                    # Dashboard interativo
+│   └── dashboard_ia.py                 # Dashboard interativo com IA
 │
 ├── outputs/
-│   ├── dashboard_streamlit.png      # Screenshot do dashboard
-│   └── modelo_final.pkl             # Modelo treinado (opcional)
+│   ├── dashboard_streamlit.png         # Screenshot do dashboard
+│   └── modelo_final.pkl                # Modelo treinado (opcional)
 │
 ├── README.md
+├── requirements.txt
 └── LICENSE
 ```
 
@@ -148,13 +187,27 @@ git clone https://github.com/seu-usuario/projeto-churn.git
 cd projeto-churn
 ```
 
-### 2. Instale as Dependências
+### 2. Configure a Chave da DeepSeek
+
+**Windows (PowerShell):**
+
+```bash
+[Environment]::SetEnvironmentVariable("DEEPSEEK_API_KEY", "sua-chave-aqui", "User")
+```
+
+**Linux/Mac:**
+
+```bash
+export DEEPSEEK_API_KEY="sua-chave-aqui"
+```
+
+### 3. Instale as Dependências
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Execute o Dashboard Interativo
+### 4. Execute o Dashboard Interativo
 
 **Opção A: Streamlit (Recomendado)**
 
@@ -168,7 +221,7 @@ streamlit run dashboard/streamlit_app.py
 jupyter notebook notebooks/04_dashboard.ipynb
 ```
 
-### 4. Treine o Modelo (Opcional)
+### 5. Treine o Modelo (Opcional)
 
 ```bash
 # Execute o notebook de modelo
@@ -177,7 +230,7 @@ jupyter notebook notebooks/03_modelo_ml.ipynb
 
 ---
 
-## 📊 Dashboard Interativo
+## 📊 Dashboard Interativo com IA
 
 **O dashboard permite visualizar:**
 
@@ -191,6 +244,27 @@ jupyter notebook notebooks/03_modelo_ml.ipynb
 
 * 🔍 Filtros por país e gênero
 
+**Funcionalidades:**
+
+**Aba	Funcionalidade**
+| Aba                           | Descrição                                                         |
+|-------------------------------|-------------------------------------------------------------------| 
+| 📊 Visualizações	            | Gráficos interativos: churn por país, idade, atividade, saldo     |  
+| 🤖 Insights com DeepSeek      | Geração automática de insights e perguntas em linguagem natural   |  
+| 📝 Relatório Completo	        | Relatório detalhado com todas as métricas e recomendações         |  
+
+
+**Exemplo de Perguntas para a IA:**
+
+* "Por que clientes da Alemanha cancelam mais?"
+
+* "Qual a idade ideal para campanhas de retenção?"
+
+* "O que fazer para reduzir o churn em 5%?"
+
+* "Qual o perfil do cliente que nunca cancela?"
+
+
 **Screenshot do Dashboard**
 
 https://outputs/dashboard_streamlit.png
@@ -203,7 +277,20 @@ https://outputs/dashboard_streamlit.png
 | Inativos	                | Campanha de reengajamento ("Volte e ganhe benefícios")    |    
 | 1 produto	                | Cross-selling: oferecer cartão, investimentos, seguros    |    
 | Score ≥ 5	                | Contato proativo por telefone (não apenas email)          |    
-| Alemanha	                | Estratégias específicas para o mercado alemão             |    
+| Alemanha	                | Estratégias específicas para o mercado alemão             |  
+
+## Insights Não Óbvios (Identificados pela IA)
+
+1. O paradoxo do saldo: Clientes com mais dinheiro são os que mais saem - o banco não está oferecendo valor
+   proporcional ao patrimônio.
+
+2. Idade como ciclo de vida: Clientes na faixa dos 44,8 anos estão em fase de mudanças (casamento, filhos, imóvel)
+   o banco pode antecipar essas necessidades.
+
+3. Inatividade como sintoma: Queda de transações é um alerta precoce melhor que esperar o cliente ficar totalmente
+   inativo.
+
+4. Alemanha como problema estrutural: Churn de 32,4% sugere problemas de precificação ou concorrência local.
 
 ---
 
@@ -217,6 +304,7 @@ https://outputs/dashboard_streamlit.png
 | Machine Learning  | Scikit-learn, Imbalanced-learn (SMOTE)    |  
 | Dashboard	        | Streamlit, Plotly                         |  
 | Estatística	    | Teste t, Qui-Quadrado                     |  
+| IA/LLM	        | DeepSeek API                              |  
 
 ---
 
@@ -251,6 +339,8 @@ https://outputs/dashboard_streamlit.png
 4. Interpretabilidade - Como explicar modelos para stakeholders
 
 5. Ética em Dados - Como evitar variáveis discriminatórias (gênero)
+
+6. Integração com LLM - Como usar IA para gerar insights automáticos
 
 ---
 
@@ -296,6 +386,8 @@ GitHub: https://github.com/RickBamberg/Portfolio/
 
 **Comunidade de Ciência de Dados** pelos aprendizados
 
+**DeepSeek** pela API de IA
+
 ---
 
 ## 📚 Referências
@@ -305,3 +397,5 @@ GitHub: https://github.com/RickBamberg/Portfolio/
 * Scikit-learn Documentation
 
 * Plotly Documentation
+
+* DeepSeek API Documentation
