@@ -1,0 +1,74 @@
+# ANÁLISE COMPLETA DE RISCO DE CRÉDITO — HOME CREDIT DEFAULT RISK
+
+---
+
+## 1. RESUMO EXECUTIVO
+
+A análise dos 307.511 clientes da Home Credit revela uma taxa de inadimplência global de 8,07%, com perda total esperada de R$ 13,8 bilhões. O estudo demonstra que as variáveis externas (EXT_SOURCE) e o comportamento de pagamento são os fatores mais preditivos de default, superando variáveis sociodemográficas tradicionais. A segmentação de risco criada identificou um grupo de altíssimo risco (3% da base) com taxa de inadimplência de 19,24%, mais que o dobro da média geral, concentrando oportunidades imediatas de mitigação.
+
+O modelo preditivo alcançou AUC-ROC de 69,77%, com acurácia de 91,91%, indicando capacidade discriminativa moderada mas utilizável para priorização de risco. As cinco variáveis mais importantes (EXT_SOURCE_2, idade, atraso médio, tempo de emprego e EXT_SOURCE_3) explicam cerca de 90% do poder preditivo do modelo, permitindo simplificação operacional significativa.
+
+O paradoxo mais relevante é a concentração da perda esperada: o segmento de baixo risco (68,7% da base) responde por 51,3% da perda total (R$ 7,1 bilhões), enquanto o altíssimo risco contribui com apenas 5,9% (R$ 815 milhões). Isso indica que estratégias exclusivamente focadas nos segmentos de alto risco deixam de endereçar metade do problema financeiro.
+
+Recomenda-se uma abordagem tripla: (1) endurecimento imediato de políticas para o segmento altíssimo risco; (2) refinamento de preço e limites para o baixo risco, que concentra maior volume absoluto de perda; e (3) implementação de monitoramento contínuo baseado nas variáveis comportamentais mais preditivas identificadas.
+
+---
+
+## 2. PRINCIPAIS INSIGHTS
+
+- **EXT_SOURCE_3 é o indicador isolado mais forte**: clientes inadimplentes têm mediana de 0,38 vs 0,55 para adimplentes (tamanho de efeito de -0,36, o maior entre todas as variáveis). Cada 0,1 de redução no score externo aumenta significativamente a probabilidade de default.
+
+- **Jovens representam risco desproporcional**: a idade média do inadimplente é 39,1 anos vs 43,5 anos (p-valor=0, efeito=-0,17). O segmento altíssimo risco tem idade média de apenas 26,3 anos, sugerindo que histórico de crédito insuficiente é um fator crítico.
+
+- **Comportamento de pagamento supera dados demográficos**: atraso médio em parcelas e atrasos no bureau apresentam efeitos significativos, e o grupo "Atrasado Sem Score" atinge 20,52% de default — o maior entre todas as interações analisadas.
+
+- **Razão crédito/renda NÃO é preditiva**: p-valor de 0,2751 (não significativo), contrariando o senso comum de crédito. Isso sugere que a qualidade do tomador importa mais que o nível de alavancagem bruto.
+
+- **Ocupação e tipo de renda importam mais que escolaridade**: tipo de renda (efeito=0,064) e ocupação (efeito=0,082) superam escolaridade (efeito=0,058), indicando que estabilidade de renda é mais relevante que formação educacional.
+
+- **Concentração de perda no baixo risco**: R$ 7,1 bilhões em perda esperada no segmento baixo risco (51,3% do total) vs R$ 815 milhões no altíssimo risco (5,9%) — o volume de exposição compensa a menor taxa de default.
+
+- **Crédito médio é maior no baixo risco**: R$ 604.538 vs R$ 468.601 no altíssimo risco, demonstrando que o segmento de maior risco recebe, em média, limites menores — porém ainda não suficientes para compensar o risco adicional.
+
+- **Tempo de emprego é um discriminador robusto**: inadimplentes têm mediana de 3,4 anos vs 4,6 anos (efeito=-0,16). O baixo risco tem média de 7,1 anos vs 3,0 no altíssimo risco, sugerindo que estabilidade profissional é um proxy confiável de capacidade de pagamento.
+
+---
+
+## 3. RECOMENDAÇÕES DE AÇÃO
+
+### POR SEGMENTO
+
+**ALTÍSSIMO RISCO (3% da base — 9.216 clientes):**
+- **Ação imediata**: Suspender novas concessões de crédito para clientes com perfil de altíssimo risco (EXT_SOURCE_3 < 0,25, idade < 30, tempo de emprego < 3 anos), com exceções apenas para casos com garantia real.
+- **Reduzir limites**: Diminuir limite de crédito em 50% para clientes atuais deste segmento, com revisão em 6 meses.
+- **Exigir garantias**: Condicionar novas operações à apresentação de garantia ou avalista.
+- **Criar programa de reabilitação**: Para clientes atuais com bom comportamento por 12 meses, permitir migração gradual para segmento de risco menor.
+
+**ALTO RISCO (12,42% de default):**
+- **Ajuste de preço**: Aplicar sobretaxa de 300-400 bps sobre a taxa base para compensar o risco adicional.
+- **Redução de prazo**: Limitar prazo máximo a 24 meses, reduzindo exposição temporal.
+- **Monitoramento intensivo**: Ativar alertas automáticos para qualquer sinal de deterioração (atraso > 5 dias, mudança de emprego).
+
+**MÉDIO RISCO (8,39% de default):**
+- **Manutenção com monitoramento**: Manter políticas atuais, mas implementar revisão trimestral do perfil.
+- **Ofertas de cross-sell seletivas**: Oferecer produtos adicionais apenas para clientes com EXT_SOURCE_3 > 0,5 e sem atrasos históricos.
+
+**BAIXO RISCO (5,94% de default — 68,7% da base):**
+- **Expansão controlada**: Aumentar limites em 15-20% para clientes com score externo > 0,6 e histórico impecável.
+- **Programa de fidelidade**: Oferecer redução de taxa para clientes que mantêm bom comportamento por 24+ meses.
+- **Mitigação do risco remanescente**: Implementar monitoramento de atraso médio em parcelas, pois mesmo neste segmento o atraso é preditivo.
+
+### FINANCEIRAS
+
+- **Provisionamento**: Ajustar provisão para perda esperada considerando a concentração de exposição no baixo risco (R$ 7,1 bi), não apenas nos segmentos de alto risco.
+- **Precificação dinâmica**: Incorporar EXT_SOURCE_2 e EXT_SOURCE_3 como variáveis de precificação, dado seu poder preditivo superior a variáveis tradicionais.
+- **Otimização de capital**: Alocar capital regulatório considerando o modelo preditivo (AUC=69,77%) para reduzir exigência de capital em segmentos de baixo risco comprovado.
+- **Limite por segmento**: Estabelecer teto de concentração de exposição no segmento altíssimo risco (máximo 2% da carteira total).
+
+---
+
+## 4. INSIGHTS NÃO ÓBVIOS
+
+**1. O paradoxo do crédito/renda**: A razão crédito/renda não é estatisticamente significativa (p=0,2751), desafiando o paradigma tradicional de subscrição. Isso sugere que, para esta base, a capacidade de pagamento percebida por scores externos e comportamento passado supera a métrica objetiva de alavancagem. Uma hipótese é que clientes com alta razão crédito/renda mas bom score externo são, na verdade, bons pagadores que otimizam seu endividamento.
+
+**2. A perda escondida no baixo risco**: O segmento de baixo risco concentra 51,3% da perda esperada total (R$ 7,1 bi). Isso ocorre porque, apesar da menor taxa de default (6%), a exposição é desproporcionalmente maior (R$ 127,7 bi vs R$ 4,3 bi no
